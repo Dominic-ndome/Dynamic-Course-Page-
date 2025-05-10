@@ -1,0 +1,1643 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern Learning Platform - Course Page</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #4361ee;
+            --secondary: #3f37c9;
+            --success: #4cc9f0;
+            --danger: #f72585;
+            --warning: #f8961e;
+            --info: #4895ef;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --gray: #6c757d;
+            --lightgray: #e9ecef;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: var(--dark);
+            line-height: 1.6;
+        }
+        
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border-width: 0;
+        }
+        
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        /* Sidebar Styles */
+        .sidebar {
+            width: 280px;
+            background: white;
+            border-right: 1px solid var(--lightgray);
+            transition: all 0.3s;
+            z-index: 100;
+            box-shadow: 0 0 15px rgba(0,0,0,0.05);
+        }
+        
+        .sidebar-header {
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--lightgray);
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+            color: var(--primary);
+        }
+        
+        .logo i {
+            margin-right: 10px;
+            font-size: 1.5rem;
+        }
+        
+        .mobile-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--dark);
+        }
+        
+        .progress-container {
+            padding: 20px;
+            border-bottom: 1px solid var(--lightgray);
+        }
+        
+        .progress-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+        }
+        
+        .progress-bar-container {
+            height: 8px;
+            background: var(--lightgray);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background: var(--primary);
+            width: 65%;
+            border-radius: 4px;
+        }
+        
+        .sidebar-content {
+            padding: 20px 0;
+        }
+        
+        .nav-title {
+            padding: 10px 20px;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            color: var(--gray);
+            font-weight: 500;
+        }
+        
+        .nav-list {
+            list-style: none;
+        }
+        
+        .nav-item {
+            padding: 8px 20px;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.2s;
+        }
+        
+        .nav-item:hover {
+            background: var(--lightgray);
+        }
+        
+        .nav-item.active {
+            background: rgba(67, 97, 238, 0.1);
+            border-left: 3px solid var(--primary);
+        }
+        
+        .nav-item.active a {
+            color: var(--primary);
+            font-weight: 500;
+        }
+        
+        .nav-item i {
+            width: 25px;
+            margin-right: 10px;
+            font-size: 1.1rem;
+        }
+        
+        .nav-item a {
+            text-decoration: none;
+            color: var(--dark);
+            flex: 1;
+            font-size: 0.95rem;
+        }
+        
+        .icon-button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            color: var(--gray);
+            transition: color 0.2s;
+        }
+        
+        .icon-button:hover {
+            color: var(--primary);
+        }
+        
+        .badge {
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 0.7rem;
+            font-weight: 500;
+            background: var(--primary);
+            color: white;
+        }
+        
+        .badge.new {
+            background: var(--success);
+        }
+        
+        .badge.warning {
+            background: var(--warning);
+        }
+        
+        /* Main Content Styles */
+        .main-content {
+            flex: 1;
+            padding: 30px;
+            max-width: calc(100% - 280px);
+        }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+        
+        .course-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+        
+        .actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .btn {
+            padding: 10px 15px;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: all 0.2s;
+        }
+        
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: var(--secondary);
+        }
+        
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--primary);
+            color: var(--primary);
+        }
+        
+        .btn-outline:hover {
+            background: rgba(67, 97, 238, 0.1);
+        }
+        
+        .btn-icon {
+            padding: 10px;
+            border-radius: 5px;
+            background: white;
+            border: 1px solid var(--lightgray);
+            color: var(--dark);
+        }
+        
+        .btn-icon:hover {
+            background: var(--lightgray);
+        }
+        
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid var(--lightgray);
+            margin-bottom: 30px;
+        }
+        
+        .tab {
+            padding: 15px 20px;
+            font-size: 1rem;
+            cursor: pointer;
+            position: relative;
+            color: var(--gray);
+            transition: all 0.2s;
+        }
+        
+        .tab.active {
+            color: var(--primary);
+            font-weight: 500;
+        }
+        
+        .tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: var(--primary);
+            border-radius: 3px 3px 0 0;
+        }
+        
+        .tab-content {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.05);
+            margin-bottom: 30px;
+        }
+        
+        /* Video Player */
+        .video-container {
+            position: relative;
+            width: 100%;
+            padding-top: 56.25%; /* 16:9 Aspect Ratio */
+            overflow: hidden;
+            border-radius: 10px 10px 0 0;
+        }
+        
+        .video-player {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .video-thumbnail {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .play-button {
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .play-button:hover {
+            background: rgba(255,255,255,0.3);
+            transform: scale(1.1);
+        }
+        
+        .video-controls {
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            border-bottom: 1px solid var(--lightgray);
+        }
+        
+        .video-progress {
+            flex: 1;
+            height: 5px;
+            background: var(--lightgray);
+            border-radius: 5px;
+            overflow: hidden;
+            cursor: pointer;
+        }
+        
+        .video-progress-fill {
+            height: 100%;
+            width: 45%;
+            background: var(--primary);
+            border-radius: 5px;
+        }
+        
+        .control-button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--gray);
+            font-size: 1.2rem;
+            transition: color 0.2s;
+        }
+        
+        .control-button:hover {
+            color: var(--primary);
+        }
+        
+        .time-display {
+            font-size: 0.9rem;
+            color: var(--gray);
+            min-width: 100px;
+            text-align: right;
+        }
+        
+        .lesson-info {
+            padding: 20px;
+        }
+        
+        .lesson-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .lesson-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+        }
+        
+        .lesson-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .lesson-meta {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+        
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .lesson-description {
+            line-height: 1.7;
+            margin-bottom: 20px;
+            color: var(--dark);
+        }
+        
+        /* Materials Section */
+        .materials-section {
+            padding: 20px;
+            border-top: 1px solid var(--lightgray);
+        }
+        
+        .section-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .materials-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+        }
+        
+        .material-item {
+            background: var(--light);
+            border-radius: 8px;
+            overflow: hidden;
+            transition: all 0.2s;
+            border: 1px solid var(--lightgray);
+        }
+        
+        .material-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        
+        .material-preview {
+            height: 120px;
+            background: var(--lightgray);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--gray);
+            font-size: 2.5rem;
+        }
+        
+        .material-info {
+            padding: 12px;
+        }
+        
+        .material-title {
+            font-size: 0.95rem;
+            font-weight: 500;
+            margin-bottom: 5px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .material-meta {
+            font-size: 0.8rem;
+            color: var(--gray);
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        /* Quiz Section */
+        .quiz-section {
+            padding: 20px;
+            border-top: 1px solid var(--lightgray);
+        }
+        
+        .quiz-container {
+            background: var(--light);
+            border-radius: 8px;
+            padding: 20px;
+            border: 1px solid var(--lightgray);
+        }
+        
+        .question {
+            margin-bottom: 20px;
+        }
+        
+        .question-text {
+            font-weight: 500;
+            margin-bottom: 10px;
+        }
+        
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .option {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            background: white;
+            border: 1px solid var(--lightgray);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .option:hover {
+            background: var(--lightgray);
+        }
+        
+        .option.selected {
+            background: rgba(67, 97, 238, 0.1);
+            border-color: var(--primary);
+        }
+        
+        .option-radio {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            border: 2px solid var(--gray);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .option.selected .option-radio {
+            border-color: var(--primary);
+        }
+        
+        .option.selected .option-radio::after {
+            content: '';
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--primary);
+        }
+        
+        .option-text {
+            flex: 1;
+        }
+        
+        .quiz-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        /* Discussion Section */
+        .discussion-section {
+            padding: 20px;
+            border-top: 1px solid var(--lightgray);
+        }
+        
+        .discussion-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .comment-form {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+        
+        .comment-input {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .comment-textarea {
+            padding: 12px 15px;
+            border-radius: 8px;
+            border: 1px solid var(--lightgray);
+            resize: none;
+            font-family: inherit;
+            margin-bottom: 10px;
+            min-height: 100px;
+        }
+        
+        .comment-textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+        
+        .comment-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .comment-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .comment {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .comment-content {
+            flex: 1;
+        }
+        
+        .comment-author {
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+        
+        .comment-text {
+            line-height: 1.5;
+            margin-bottom: 10px;
+        }
+        
+        .comment-meta {
+            display: flex;
+            gap: 15px;
+            color: var(--gray);
+            font-size: 0.85rem;
+        }
+        
+        .comment-meta-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            cursor: pointer;
+        }
+        
+        .comment-meta-item:hover {
+            color: var(--primary);
+        }
+        
+        /* Message Instructor */
+        .message-instructor {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 1000;
+        }
+        
+        .message-button {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+        }
+        
+        .message-button:hover {
+            transform: scale(1.1);
+            background: var(--secondary);
+        }
+        
+        .message-panel {
+            position: absolute;
+            bottom: 75px;
+            right: 0;
+            width: 350px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.1);
+            overflow: hidden;
+            display: none;
+        }
+        
+        .message-header {
+            padding: 15px;
+            background: var(--primary);
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .instructor-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .instructor-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+        
+        .instructor-name {
+            font-weight: 500;
+        }
+        
+        .instructor-status {
+            font-size: 0.8rem;
+            opacity: 0.8;
+        }
+        
+        .message-body {
+            height: 300px;
+            padding: 15px;
+            overflow-y: auto;
+        }
+        
+        .message-footer {
+            padding: 15px;
+            border-top: 1px solid var(--lightgray);
+            display: flex;
+            gap: 10px;
+        }
+        
+        .message-input {
+            flex: 1;
+            padding: 10px 15px;
+            border-radius: 20px;
+            border: 1px solid var(--lightgray);
+            font-family: inherit;
+        }
+        
+        .message-input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+        
+        /* Upcoming Events */
+        .right-sidebar {
+            width: 320px;
+            background: white;
+            border-left: 1px solid var(--lightgray);
+            padding: 20px;
+            overflow-y: auto;
+            transition: all 0.3s;
+            z-index: 100;
+            box-shadow: 0 0 15px rgba(0,0,0,0.05);
+        }
+        
+        .events-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .events-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .event-card {
+            background: var(--light);
+            border-radius: 8px;
+            padding: 15px;
+            border: 1px solid var(--lightgray);
+            transition: all 0.2s;
+        }
+        
+        .event-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        
+        .event-date {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            color: var(--primary);
+            font-weight: 500;
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+        }
+        
+        .event-title {
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        
+        .event-info {
+            color: var(--gray);
+            font-size: 0.85rem;
+            margin-bottom: 15px;
+        }
+        
+        .countdown {
+            background: rgba(67, 97, 238, 0.1);
+            border-radius: 5px;
+            padding: 8px;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .countdown-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .countdown-value {
+            font-weight: 600;
+            color: var(--primary);
+        }
+        
+        .countdown-label {
+            font-size: 0.7rem;
+            color: var(--gray);
+            text-transform: uppercase;
+        }
+        
+        /* Responsive Styles */
+        @media (max-width: 1200px) {
+            .right-sidebar {
+                display: none;
+            }
+            
+            .main-content {
+                max-width: calc(100% - 280px);
+            }
+        }
+        
+        @media (max-width: 992px) {
+            .sidebar {
+                position: fixed;
+                left: -280px;
+                height: 100vh;
+            }
+            
+            .sidebar.active {
+                left: 0;
+            }
+            
+            .mobile-toggle {
+                display: block;
+            }
+            
+            .main-content {
+                max-width: 100%;
+                padding: 20px;
+            }
+            
+            .course-title {
+                font-size: 1.5rem;
+            }
+            
+            .materials-list {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+            
+            .actions {
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            .tabs {
+                overflow-x: auto;
+                white-space: nowrap;
+                padding-bottom: 5px;
+            }
+            
+            .tab {
+                padding: 15px 15px;
+                font-size: 0.9rem;
+            }
+            
+            .comment-form {
+                flex-direction: column;
+            }
+            
+            .materials-list {
+                grid-template-columns: 1fr;
+            }
+            
+            .message-panel {
+                width: 300px;
+                right: -20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <i class="fas fa-graduation-cap"></i>
+                    <span>Learning Hub</span>
+                </div>
+                <button class="mobile-toggle" aria-label="Toggle sidebar">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+            
+            <div class="progress-container">
+                <div class="progress-info">
+                    <span>Course Progress</span>
+                    <span>65%</span>
+                </div>
+                <div class="progress-bar-container">
+                    <div class="progress-bar" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+            </div>
+            
+            <div class="sidebar-content">
+                <p class="nav-title">Course Content</p>
+                <ul class="nav-list">
+                    <li class="nav-item">
+                        <i class="fas fa-check-circle" style="color: var(--success);"></i>
+                        <a href="#">Introduction to the Course</a>
+                    </li>
+                    <li class="nav-item active">
+                        <i class="fas fa-play-circle" style="color: var(--primary);"></i>
+                        <a href="#">Module 1: Fundamentals</a>
+                    </li>
+                    <li class="nav-item">
+                        <i class="far fa-circle"></i>
+                        <a href="#">Module 2: Intermediate Concepts</a>
+                        <span class="badge new">New</span>
+                    </li>
+                    <li class="nav-item">
+                        <i class="far fa-circle"></i>
+                        <a href="#">Module 3: Advanced Techniques</a>
+                        <span class="badge warning">Soon</span>
+                    </li>
+                    <li class="nav-item">
+                        <i class="far fa-circle"></i>
+                        <a href="#">Final Project</a>
+                    </li>
+                </ul>
+                
+                <p class="nav-title">Quick Links</p>
+                <ul class="nav-list">
+                    <li class="nav-item">
+                        <i class="fas fa-book"></i>
+                        <a href="#">Course Syllabus</a>
+                    </li>
+                    <li class="nav-item">
+                        <i class="fas fa-certificate"></i>
+                        <a href="#">Certificate</a>
+                    </li>
+                    <li class="nav-item">
+                        <i class="fas fa-question-circle"></i>
+                        <a href="#">FAQ</a>
+                    </li>
+                    <li class="nav-item">
+                        <i class="fas fa-headset"></i>
+                        <a href="#">Tech Support</a>
+                    </li>
+                </ul>
+                
+                <p class="nav-title">Learning Tools</p>
+                <ul class="nav-list">
+                    <li class="nav-item">
+                        <i class="fas fa-users"></i>
+                        <a href="#">Student Forum</a>
+                    </li>
+                    <li class="nav-item">
+                        <i class="fas fa-sticky-note"></i>
+                        <a href="#">My Notes</a>
+                    </li>
+                    <li class="nav-item">
+                        <i class="fas fa-bookmark"></i>
+                        <a href="#">Bookmarks</a>
+                    </li>
+                    <li class="nav-item">
+                        <i class="fas fa-chart-bar"></i>
+                        <a href="#">My Progress</a>
+                    </li>
+                </ul>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="header">
+                <h1 class="course-title">Advanced Web Development Masterclass</h1>
+                <div class="actions">
+                    <button class="btn btn-outline">
+                        <i class="fas fa-bookmark"></i>
+                        <span>Save</span>
+                    </button>
+                    <button class="btn btn-primary">
+                        <i class="fas fa-arrow-right"></i>
+                        <span>Next Lesson</span>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="tabs">
+                <div class="tab active">Lesson</div>
+                <div class="tab">Notes</div>
+                <div class="tab">Resources</div>
+                <div class="tab">Assignments</div>
+            </div>
+            
+            <div class="tab-content">
+                <div class="video-container">
+                    <div class="video-player">
+                        <img src="/api/placeholder/800/450" alt="Video thumbnail" class="video-thumbnail">
+                        <div class="play-button">
+                            <i class="fas fa-play"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="video-controls">
+                    <button class="control-button" aria-label="Play/Pause">
+                        <i class="fas fa-play"></i>
+                    </button>
+                    <div class="video-progress" aria-label="Video progress">
+                        <div class="video-progress-fill"></div>
+                    </div>
+                    <div class="time-display">12:45 / 28:30</div>
+                </div>
+                
+                <div class="lesson-info">
+                    <div class="lesson-header">
+                        <h2 class="lesson-title">1.3 Responsive Design Principles</h2>
+                        <div class="lesson-actions">
+                            <button class="icon-button" aria-label="Download">
+                                <i class="fas fa-download"></i>
+                            </button>
+                            <button class="icon-button" aria-label="Share">
+                                <i class="fas fa-share-alt"></i>
+                            </button>
+                            <button class="icon-button" aria-label="Fullscreen">
+                                <i class="fas fa-expand"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="lesson-meta">
+                        <div class="meta-item">
+                            <i class="fas fa-clock"></i>
+                            <span>28 minutes</span>
+                        </div>
+                        <div class="meta-item">
+                            <i class="fas fa-calendar"></i>
+                            <span>Updated May 5, 2025</span>
+                        </div>
+                        <div class="meta-item">
+                            <i class="fas fa-eye"></i>
+                            <span>2,456 views</span>
+                        </div>
+                    </div>
+                    
+                    <p class="lesson-description">
+                        In this lesson, we'll explore the core principles of responsive design and how to implement them in your web projects. You'll learn about fluid grids, flexible images, media queries, and mobile-first approach. By the end of this lesson, you'll understand how to create websites that provide an optimal viewing experience across a wide range of devices.
+                    </p>
+                </div>
+                
+                <div class="materials-section">
+                    <h3 class="section-title">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Lesson Materials</span>
+                    </h3>
+                    
+                    <div class="materials-list">
+                        <div class="material-item">
+                            <div class="material-preview">
+                                <i class="fas fa-file-pdf"></i>
+                            </div>
+                            <div class="material-info">
+                                <h4 class="material-title">Lesson Slides</h4>
+                                <div class="material-meta">
+                                    <span>PDF • 2.4 MB</span>
+                                    <button class="icon-button">
+                                        <i class="fas fa-download"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="material-item">
+                            <div class="material-preview">
+                                <i class="fas fa-file-code"></i>
+                            </div>
+                            <div class="material-info">
+                                <h4 class="material-title">Code Examples</h4>
+                                <div class="material-meta">
+                                    <span>ZIP • 1.8 MB</span>
+                                    <button class="icon-button">
+                                        <i class="fas fa-download"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="material-item">
+                            <div class="material-preview">
+                                <i class="fas fa-file-alt"></i>
+                            </div>
+                            <div class="material-info">
+                                <h4 class="material-title">Exercise Worksheet</h4>
+                                <div class="material-meta">
+                                    <span>DOCX • 0.9 MB</span>
+                                    <button class="icon-button">
+                                        <i class="fas fa-download"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="material-item">
+                            <div class="material-preview">
+                                <i class="fas fa-link"></i>
+                            </div>
+                            <div class="material-info">
+                                <h4 class="material-title">Additional Resources</h4>
+                                <div class="material-meta">
+                                    <span>Links • 5 items</span>
+                                    <button class="icon-button">
+                                        <i class="fas fa-external-link-alt"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="quiz-section">
+                    <h3 class="section-title">
+                        <i class="fas fa-question-circle"></i>
+                        <span>Knowledge Check</span>
+                    </h3>
+                    
+                    <div class="quiz-container">
+                        <div class="question">
+                            <p class="question-text">1. Which of the following best describes the mobile-first approach?</p>
+                            <div class="options">
+                                <div class="option">
+                                    <div class="option-radio"></div>
+                                    <span class="option-text">Creating separate websites for mobile and desktop users</span>
+                                </div>
+                                <div class="option selected">
+                                    <div class="option-radio"></div>
+                                    <span class="option-text">Designing for mobile devices first, then progressively enhancing for larger screens</span>
+                                </div>
+                                <div class="option">
+                                    <div class="option-radio"></div>
+                                    <span class="option-text">Using only fixed-width layouts that look the same on all devices</span>
+                                </div>
+                                <div class="option">
+                                    <div class="option-radio"></div>
+                                    <span class="option-text">Converting existing desktop designs to fit on smaller screens</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="question">
+                            <p class="question-text">2. Which CSS feature is essential for creating responsive designs?</p>
+                            <div class="options">
+                                <div class="option">
+                                    <div class="option-radio"></div>
+                                    <span class="option-text">CSS Animations</span>
+                                </div>
+                                <div class="option">
+                                    <div class="option-radio"></div>
+                                    <span class="option-text">CSS Variables</span>
+                                </div>
+                                <div class="option selected">
+                                    <div class="option-radio"></div>
+                                    <span class="option-text">Media Queries</span>
+                                </div>
+                                <div class="option">
+                                    <div class="option-radio"></div>
+                                    <span class="option-text">CSS Grid (exclusively)</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="quiz-actions">
+                            <button class="btn btn-outline">Reset</button>
+                            <button class="btn btn-primary">Submit</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="discussion-section">
+                    <div class="discussion-header">
+                        <h3 class="section-title">
+                            <i class="fas fa-comments"></i>
+                            <span>Discussion (18)</span>
+                        </h3>
+                        <button class="btn btn-outline">
+                            <i class="fas fa-sort"></i>
+                            <span>Sort by Newest</span>
+                        </button>
+                    </div>
+                    
+                    <div class="comment-form">
+                        <div class="user-avatar">S</div>
+                        <div class="comment-input">
+                            <textarea class="comment-textarea" placeholder="Add to the discussion..."></textarea>
+                            <div class="comment-actions">
+                                <div>
+                                    <button class="icon-button" aria-label="Add attachment">
+                                        <i class="fas fa-paperclip"></i>
+                                    </button>
+                                    <button class="icon-button" aria-label="Add code">
+                                        <i class="fas fa-code"></i>
+                                    </button>
+                                    <button class="icon-button" aria-label="Add emoji">
+                                        <i class="fas fa-smile"></i>
+                                    </button>
+                                </div>
+                                <button class="btn btn-primary">Post Comment</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="comment-list">
+                        <div class="comment">
+                            <div class="user-avatar">J</div>
+                            <div class="comment-content">
+                                <h4 class="comment-author">James Wilson</h4>
+                                <p class="comment-text">
+                                    I'm having trouble with the media query example from 18:45 in the video. When I try to implement it, the layout breaks on tablet devices. Has anyone else encountered this issue?
+                                </p>
+                                <div class="comment-meta">
+                                    <span>2 hours ago</span>
+                                    <div class="comment-meta-item">
+                                        <i class="far fa-thumbs-up"></i>
+                                        <span>5</span>
+                                    </div>
+                                    <div class="comment-meta-item">
+                                        <i class="far fa-comment"></i>
+                                        <span>Reply</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="comment">
+                            <div class="user-avatar">E</div>
+                            <div class="comment-content">
+                                <h4 class="comment-author">Elena Kowalski</h4>
+                                <p class="comment-text">
+                                    Great lesson! I especially liked the part about fluid grids. One tip I can add from my experience is to use CSS custom properties for breakpoints - it makes maintenance so much easier.
+                                </p>
+                                <div class="comment-meta">
+                                    <span>5 hours ago</span>
+                                    <div class="comment-meta-item">
+                                        <i class="fas fa-thumbs-up" style="color: var(--primary);"></i>
+                                        <span>12</span>
+                                    </div>
+                                    <div class="comment-meta-item">
+                                        <i class="far fa-comment"></i>
+                                        <span>Reply</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="comment">
+                            <div class="user-avatar">R</div>
+                            <div class="comment-content">
+                                <h4 class="comment-author">Ryan Martinez (Instructor)</h4>
+                                <p class="comment-text">
+                                    Thank you all for the great questions! I've added an additional CSS file in the materials section that addresses the common issues some of you mentioned. Don't forget to complete the quiz before moving to the next lesson.
+                                </p>
+                                <div class="comment-meta">
+                                    <span>1 day ago</span>
+                                    <div class="comment-meta-item">
+                                        <i class="fas fa-thumbs-up" style="color: var(--primary);"></i>
+                                        <span>28</span>
+                                    </div>
+                                    <div class="comment-meta-item">
+                                        <i class="far fa-comment"></i>
+                                        <span>Reply</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Certificate Preview -->
+            <div class="tab-content" style="display: none;">
+                <div style="padding: 20px; text-align: center;">
+                    <img src="/api/placeholder/500/350" alt="Certificate Preview" style="max-width: 100%; border: 1px solid var(--lightgray); border-radius: 5px; margin-bottom: 20px;">
+                    <h3 style="margin-bottom: 15px;">Course Completion Certificate</h3>
+                    <p style="color: var(--gray); margin-bottom: 20px;">Complete all modules and assignments to earn your personalized certificate.</p>
+                    <div class="progress-bar-container" style="margin-bottom: 20px;">
+                        <div class="progress-bar" style="width: 65%;"></div>
+                    </div>
+                    <p style="font-size: 0.9rem; color: var(--primary); font-weight: 500;">65% Complete - 3 more modules to go!</p>
+                </div>
+            </div>
+        </main>
+
+        <!-- Right Sidebar - Upcoming Events -->
+        <aside class="right-sidebar">
+            <div class="events-header">
+                <h3 class="section-title">Upcoming Events</h3>
+                <button class="icon-button">
+                    <i class="fas fa-calendar-alt"></i>
+                </button>
+            </div>
+            
+            <div class="events-list">
+                <div class="event-card">
+                    <div class="event-date">
+                        <i class="fas fa-video"></i>
+                        <span>Live Webinar</span>
+                    </div>
+                    <h4 class="event-title">Advanced Responsive Design Techniques</h4>
+                    <p class="event-info">Join instructor Ryan Martinez for a deep dive into advanced responsive design techniques and Q&A session.</p>
+                    <div class="countdown">
+                        <div class="countdown-item">
+                            <span class="countdown-value">1</span>
+                            <span class="countdown-label">day</span>
+                        </div>
+                        <div class="countdown-item">
+                            <span class="countdown-value">08</span>
+                            <span class="countdown-label">hrs</span>
+                        </div>
+                        <div class="countdown-item">
+                            <span class="countdown-value">45</span>
+                            <span class="countdown-label">min</span>
+                        </div>
+                        <div class="countdown-item">
+                            <span class="countdown-value">30</span>
+                            <span class="countdown-label">sec</span>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" style="width: 100%;">
+                        <i class="fas fa-calendar-plus"></i>
+                        <span>Add to Calendar</span>
+                    </button>
+                </div>
+                
+                <div class="event-card">
+                    <div class="event-date">
+                        <i class="fas fa-tasks"></i>
+                        <span>Assignment Due</span>
+                    </div>
+                    <h4 class="event-title">Module 1 Project: Responsive Portfolio</h4>
+                    <p class="event-info">Implement a responsive portfolio website using the techniques learned in Module 1.</p>
+                    <div class="countdown">
+                        <div class="countdown-item">
+                            <span class="countdown-value">3</span>
+                            <span class="countdown-label">days</span>
+                        </div>
+                        <div class="countdown-item">
+                            <span class="countdown-value">12</span>
+                            <span class="countdown-label">hrs</span>
+                        </div>
+                        <div class="countdown-item">
+                            <span class="countdown-value">30</span>
+                            <span class="countdown-label">min</span>
+                        </div>
+                        <div class="countdown-item">
+                            <span class="countdown-value">00</span>
+                            <span class="countdown-label">sec</span>
+                        </div>
+                    </div>
+                    <button class="btn btn-outline" style="width: 100%;">
+                        <i class="fas fa-upload"></i>
+                        <span>Submit Assignment</span>
+                    </button>
+                </div>
+                
+                <div class="event-card">
+                    <div class="event-date">
+                        <i class="fas fa-users"></i>
+                        <span>Live Q&A Session</span>
+                    </div>
+                    <h4 class="event-title">Group Discussion: Mobile UX Best Practices</h4>
+                    <p class="event-info">Join fellow students and the instructor for a discussion on mobile UX design principles and best practices.</p>
+                    <p style="color: var(--gray); font-size: 0.85rem; margin-bottom: 15px;">
+                        <i class="fas fa-calendar"></i> Friday, May 16, 2025 • 2:00 PM EST
+                    </p>
+                    <button class="btn btn-primary" style="width: 100%;">
+                        <i class="fas fa-bell"></i>
+                        <span>Remind Me</span>
+                    </button>
+                </div>
+            </div>
+            
+            <div style="margin-top: 30px;">
+                <h3 class="section-title" style="margin-bottom: 15px;">Instructor</h3>
+                <div style="display: flex; gap: 15px; margin-bottom: 20px;">
+                    <img src="/api/placeholder/80/80" alt="Instructor" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover;">
+                    <div>
+                        <h4 style="margin-bottom: 5px;">Ryan Martinez</h4>
+                        <p style="color: var(--gray); font-size: 0.85rem; margin-bottom: 5px;">Senior Web Developer • Instructor</p>
+                        <div style="display: flex; gap: 10px;">
+                            <button class="icon-button">
+                                <i class="fab fa-linkedin"></i>
+                            </button>
+                            <button class="icon-button">
+                                <i class="fab fa-twitter"></i>
+                            </button>
+                            <button class="icon-button">
+                                <i class="fab fa-github"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <p style="color: var(--gray); font-size: 0.9rem; margin-bottom: 15px;">
+                    <i class="fas fa-clock"></i> Office Hours: Mon & Wed, 10AM-12PM EST
+                </p>
+                <button class="btn btn-outline" style="width: 100%;">
+                    <i class="fas fa-envelope"></i>
+                    <span>Contact Instructor</span>
+                </button>
+            </div>
+            
+            <div style="margin-top: 30px;">
+                <h3 class="section-title">Your Progress</h3>
+                <div style="background: white; border-radius: 8px; padding: 15px; border: 1px solid var(--lightgray); margin-top: 15px;">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 15px;">
+                        <div>
+                            <h4 style="margin-bottom: 5px;">Achievements</h4>
+                            <p style="color: var(--gray); font-size: 0.85rem;">Keep up the good work!</p>
+                        </div>
+                        <div style="background: var(--primary); color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold;">
+                            3
+                        </div>
+                    </div>
+                    <div style="display: flex; gap: 10px; margin-bottom: 15px; overflow-x: auto; padding-bottom: 5px;">
+                        <div style="background: var(--light); border-radius: 8px; padding: 10px; min-width: 100px; text-align: center; border: 1px solid var(--lightgray);">
+                            <i class="fas fa-fire" style="color: var(--danger); font-size: 1.5rem; margin-bottom: 5px;"></i>
+                            <p style="font-size: 0.8rem; font-weight: 500;">5-Day Streak</p>
+                        </div>
+                        <div style="background: var(--light); border-radius: 8px; padding: 10px; min-width: 100px; text-align: center; border: 1px solid var(--lightgray);">
+                            <i class="fas fa-award" style="color: var(--warning); font-size: 1.5rem; margin-bottom: 5px;"></i>
+                            <p style="font-size: 0.8rem; font-weight: 500;">First Quiz Ace</p>
+                        </div>
+                        <div style="background: var(--light); border-radius: 8px; padding: 10px; min-width: 100px; text-align: center; border: 1px solid var(--lightgray);">
+                            <i class="fas fa-comments" style="color: var(--info); font-size: 1.5rem; margin-bottom: 5px;"></i>
+                            <p style="font-size: 0.8rem; font-weight: 500;">Active Participant</p>
+                        </div>
+                    </div>
+                    <button class="btn btn-outline" style="width: 100%;">
+                        <i class="fas fa-trophy"></i>
+                        <span>View All Achievements</span>
+                    </button>
+                </div>
+            </div>
+        </aside>
+        
+        <!-- Message Instructor Panel -->
+        <div class="message-instructor">
+            <div class="message-button">
+                <i class="fas fa-comment-alt"></i>
+            </div>
+            
+            <div class="message-panel">
+                <div class="message-header">
+                    <div class="instructor-info">
+                        <div class="instructor-avatar">R</div>
+                        <div>
+                            <div class="instructor-name">Ryan Martinez</div>
+                            <div class="instructor-status">Typically replies within 24h</div>
+                        </div>
+                    </div>
+                    <button class="icon-button" style="color: white;">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                
+                <div class="message-body">
+                    <!-- Messages will appear here -->
+                    <div style="text-align: center; color: var(--gray); padding: 20px 0;">
+                        <i class="fas fa-comment-alt" style="font-size: 2rem; margin-bottom: 10px; opacity: 0.5;"></i>
+                        <p>Send a message to your instructor</p>
+                        <p style="font-size: 0.85rem; margin-top: 5px;">Questions, clarifications, or feedback</p>
+                    </div>
+                </div>
+                
+                <div class="message-footer">
+                    <input type="text" class="message-input" placeholder="Type your message...">
+                    <button class="icon-button" style="font-size: 1.2rem; color: var(--primary);">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Toggle sidebar on mobile
+        document.querySelector('.mobile-toggle').addEventListener('click', function() {
+            document.querySelector('.sidebar').classList.toggle('active');
+        });
+        
+        // Toggle message panel
+        document.querySelector('.message-button').addEventListener('click', function() {
+            const messagePanel = document.querySelector('.message-panel');
+            if (messagePanel.style.display === 'block') {
+                messagePanel.style.display = 'none';
+            } else {
+                messagePanel.style.display = 'block';
+            }
+        });
+        
+        // Close message panel
+        document.querySelector('.message-header .icon-button').addEventListener('click', function() {
+            document.querySelector('.message-panel').style.display = 'none';
+        });
+        
+        // Play button interaction
+        document.querySelector('.play-button').addEventListener('click', function() {
+            alert('Video playback would start here in a real implementation.');
+            
+            // In a real implementation, you would:
+            // 1. Hide the thumbnail and play button
+            // 2. Show the actual video player
+            // 3. Start playing the video
+            // 4. Update the control button to show pause icon
+        });
+        
+        // Toggle tab content (simplified for demo)
+        const tabs = document.querySelectorAll('.tab');
+        tabs.forEach(tab => {
+            tab.addEventListener('click', function() {
+                tabs.forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+                
+                // In a real implementation, you would show the corresponding tab content
+                // and hide the others
+            });
+        });
+        
+        // Handle quiz option selection
+        const options = document.querySelectorAll('.option');
+        options.forEach(option => {
+            option.addEventListener('click', function() {
+                // In a single choice question, deselect all siblings first
+                const siblings = this.parentNode.querySelectorAll('.option');
+                siblings.forEach(sib => sib.classList.remove('selected'));
+                
+                // Then select this option
+                this.classList.add('selected');
+            });
+        });
+        
+        // Simulated countdown for events
+        function updateCountdown() {
+            // In a real implementation, you would:
+            // 1. Calculate the time difference between now and event time
+            // 2. Update the countdown values accordingly
+            // 3. Handle when countdown reaches zero
+        }
+        
+        // Call once and then set interval for real implementation
+        // setInterval(updateCountdown, 1000);
+        
+        // Accessibility improvements
+        document.querySelectorAll('button, a').forEach(el => {
+            if (!el.getAttribute('aria-label') && !el.textContent.trim()) {
+                const icon = el.querySelector('i');
+                if (icon) {
+                    const className = icon.className;
+                    if (className.includes('download')) {
+                        el.setAttribute('aria-label', 'Download');
+                    } else if (className.includes('share')) {
+                        el.setAttribute('aria-label', 'Share');
+                    } else if (className.includes('expand')) {
+                        el.setAttribute('aria-label', 'Expand');
+                    }
+                    // Add more conditions as needed
+                }
+            }
+        });
+    </script>
+</body>
+</html>
